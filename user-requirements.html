@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Requirements - Tsungie Tech Solutions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b9d 0%, #c44569 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            background: #f0f0f0;
+            height: 6px;
+            margin: 0 30px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(135deg, #ff6b9d 0%, #4ecdc4 100%);
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-title {
+            font-size: 1.5em;
+            color: #c44569;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #fce4ec;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #ff6b9d;
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b9d 0%, #4ecdc4 100%);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .step-counter {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 4em;
+            color: #4ecdc4;
+            margin-bottom: 20px;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✨ Website Requirements Form</h1>
+            <p>Tell us about your vision - we'll bring it to life!</p>
+            <div style="margin-top: 15px; font-size: 1.1em; font-weight: 500;">
+                <span style="background: rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px;">
+                    💝 Gifted Hands Designs
+                </span>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="form-container">
+            <div class="step-counter">
+                <span id="currentStep">1</span> of <span id="totalSteps">7</span>
+            </div>
+
+            <form id="requirementsForm">
+                <!-- Step 1: Business Information -->
+                <div class="step active" data-step="1">
+                    <h2 class="step-title">📊 Business Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="businessName">Business Name <span class="required">*</span></label>
+                            <input type="text" id="businessName" name="businessName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="businessType">Business Type <span class="required">*</span></label>
+                            <select id="businessType" name="businessType" required>
+                                <option value="">Select business type</option>
+                                <option value="pharmacy">Pharmacy</option>
+                                <option value="clinic">Medical Clinic</option>
+                                <option value="hospital">Hospital</option>
+                                <option value="lodge">Lodge/Hotel</option>
+                                <option value="restaurant">Restaurant</option>
+                                <option value="retail">Retail Store</option>
+                                <option value="services">Professional Services</option>
+                                <option value="construction">Construction</option>
+                                <option value="law">Law Firm</option>
+                                <option value="beauty">Beauty/Salon</option>
+                                <option value="fitness">Fitness/Gym</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="yearsInBusiness">Years in Business</label>
+                            <input type="number" id="yearsInBusiness" name="yearsInBusiness" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="numberOfLocations">Number of Locations</label>
+                            <input type="number" id="numberOfLocations" name="numberOfLocations" min="1" value="1">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="mainLocation">Main Location Address <span class="required">*</span></label>
+                        <input type="text" id="mainLocation" name="mainLocation" required>
+                        <div class="help-text">Full address including city and country</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="targetCustomers">Target Customers <span class="required">*</span></label>
+                        <textarea id="targetCustomers" name="targetCustomers" placeholder="Describe your typical customers (age groups, demographics, needs, etc.)" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 2: Services & Offerings (Dynamic based on business type) -->
+                <div class="step" data-step="2">
+                    <h2 class="step-title">💼 Services & Offerings</h2>
+                    
+                    <!-- Pharmacy Services -->
+                    <div class="business-specific pharmacy-services" style="display: none;">
+                        <div class="form-group">
+                            <label>Pharmacy Services You Offer <span class="required">*</span></label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="prescriptions" name="services[]" value="prescriptions">
+                                    <label for="prescriptions">Prescription Filling</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="otc" name="services[]" value="otc">
+                                    <label for="otc">Over-the-Counter Medications</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="vaccinations" name="services[]" value="vaccinations">
+                                    <label for="vaccinations">Vaccinations</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="consultations" name="services[]" value="consultations">
+                                    <label for="consultations">Health Consultations</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="delivery" name="services[]" value="delivery">
+                                    <label for="delivery">Home Delivery</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="compounding" name="services[]" value="compounding">
+                                    <label for="compounding">Compounding Services</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="healthSpecializations">Health Specializations</label>
+                            <textarea id="healthSpecializations" name="specializations" placeholder="Any specific health areas you specialize in (diabetes, pediatrics, etc.)"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Lodge Services -->
+                    <div class="business-specific lodge-services" style="display: none;">
+                        <div class="form-group">
+                            <label>Lodge Services & Amenities <span class="required">*</span></label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="accommodation" name="services[]" value="accommodation">
+                                    <label for="accommodation">Accommodation</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="restaurant-service" name="services[]" value="restaurant">
+                                    <label for="restaurant-service">Restaurant/Dining</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="conference" name="services[]" value="conference">
+                                    <label for="conference">Conference Facilities</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="wifi" name="services[]" value="wifi">
+                                    <label for="wifi">Free WiFi</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="swimming" name="services[]" value="swimming">
+                                    <label for="swimming">Swimming Pool</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="spa" name="services[]" value="spa">
+                                    <label for="spa">Spa Services</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="tours" name="services[]" value="tours">
+                                    <label for="tours">Tour Arrangements</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="transport" name="services[]" value="transport">
+                                    <label for="transport">Airport Transport</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="roomTypes">Room Types</label>
+                                <textarea id="roomTypes" name="roomTypes" placeholder="Single, Double, Family, Suites, etc."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="capacity">Total Room Capacity</label>
+                                <input type="number" id="capacity" name="capacity" placeholder="Number of rooms">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="tourismActivities">Nearby Attractions/Activities</label>
+                            <textarea id="tourismActivities" name="tourismActivities" placeholder="Game parks, cultural sites, adventure activities, etc."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Generic Services for other business types -->
+                    <div class="business-specific generic-services" style="display: none;">
+                        <div class="form-group">
+                            <label for="primaryServices">Primary Services/Products <span class="required">*</span></label>
+                            <textarea id="primaryServices" name="services" placeholder="Describe your main services or products" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="businessSpecializations">Specializations</label>
+                            <textarea id="businessSpecializations" name="specializations" placeholder="Any areas of expertise or specialization"></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Common fields for all business types -->
+                    <div class="form-group">
+                        <label for="operatingHours">Operating Hours <span class="required">*</span></label>
+                        <textarea id="operatingHours" name="operatingHours" placeholder="Monday - Friday: 8:00 AM - 6:00 PM, etc." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentMethods">Payment Methods Accepted</label>
+                        <textarea id="paymentMethods" name="paymentMethods" placeholder="Cash, credit cards, mobile money, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 3: Website Goals -->
+                <div class="step" data-step="3">
+                    <h2 class="step-title">🎯 Website Goals & Features</h2>
+                    
+                    <div class="form-group">
+                        <label>Primary Website Goals <span class="required">*</span></label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="attractCustomers" name="goals[]" value="attract-customers">
+                                <label for="attractCustomers">Attract New Customers</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="provideInfo" name="goals[]" value="provide-info">
+                                <label for="provideInfo">Provide Service Information</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="onlineRequests" name="goals[]" value="online-requests">
+                                <label for="onlineRequests">Enable Online Requests</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="buildTrust" name="goals[]" value="build-trust">
+                                <label for="buildTrust">Build Trust & Credibility</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="communication" name="goals[]" value="communication">
+                                <label for="communication">Improve Customer Communication</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Desired Website Features</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="prescriptionRefill" name="features[]" value="prescription-refill">
+                                <label for="prescriptionRefill">Online Prescription Refill Requests</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="medicineChecker" name="features[]" value="medicine-checker">
+                                <label for="medicineChecker">Medicine Availability Checker</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="appointmentBooking" name="features[]" value="appointment-booking">
+                                <label for="appointmentBooking">Appointment Booking</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="healthBlog" name="features[]" value="health-blog">
+                                <label for="healthBlog">Health Tips Blog</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="testimonials" name="features[]" value="testimonials">
+                                <label for="testimonials">Customer Testimonials</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="liveChat" name="features[]" value="live-chat">
+                                <label for="liveChat">Live Chat Support</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="uniqueSellingPoint">What makes your business different? <span class="required">*</span></label>
+                        <textarea id="uniqueSellingPoint" name="uniqueSellingPoint" placeholder="What sets you apart from competitors?" required></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 4: Design Preferences -->
+                <div class="step" data-step="4">
+                    <h2 class="step-title">🎨 Design Preferences</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferredStyle">Preferred Style <span class="required">*</span></label>
+                            <select id="preferredStyle" name="preferredStyle" required>
+                                <option value="">Select style</option>
+                                <option value="modern-clean">Modern & Clean</option>
+                                <option value="traditional-trustworthy">Traditional & Trustworthy</option>
+                                <option value="warm-friendly">Warm & Family-Friendly</option>
+                                <option value="professional-medical">Professional & Medical</option>
+                                <option value="bright-welcoming">Bright & Welcoming</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="colorPreferences">Color Preferences</label>
+                            <input type="text" id="colorPreferences" name="colorPreferences" placeholder="Blue, green, white, etc.">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="existingBranding">Do you have existing branding?</label>
+                        <select id="existingBranding" name="existingBranding">
+                            <option value="yes-logo">Yes, I have a logo and brand colors</option>
+                            <option value="partial">Partial (logo only or colors only)</option>
+                            <option value="no">No, need complete branding</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inspirationSites">Website Examples You Like</label>
+                        <textarea id="inspirationSites" name="inspirationSites" placeholder="Any websites you admire? (URLs or descriptions)"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="avoidElements">Elements to Avoid</label>
+                        <textarea id="avoidElements" name="avoidElements" placeholder="Any colors, styles, or features you dislike?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 5: Technical Requirements -->
+                <div class="step" data-step="5">
+                    <h2 class="step-title">⚙️ Technical Requirements</h2>
+                    
+                    <div class="form-group">
+                        <label for="currentWebsite">Do you currently have a website?</label>
+                        <select id="currentWebsite" name="currentWebsite">
+                            <option value="no">No</option>
+                            <option value="yes-outdated">Yes, but it's outdated</option>
+                            <option value="yes-unsatisfied">Yes, but I'm not satisfied</option>
+                            <option value="yes-updating">Yes, just updating content</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="domainName">Existing Domain Name</label>
+                        <input type="text" id="domainName" name="domainName" placeholder="www.yourwebsite.com">
+                        <div class="help-text">If you don't have one, we'll help you choose and register</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contentManagement">Do you want to update content yourself?</label>
+                        <select id="contentManagement" name="contentManagement">
+                            <option value="yes">Yes, I want easy content management</option>
+                            <option value="no">No, I prefer professional management</option>
+                            <option value="mixed">Some content I'll update, some professionally managed</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="integrations">Integrations Needed</label>
+                        <textarea id="integrations" name="integrations" placeholder="Social media, email marketing, booking systems, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 6: Timeline & Budget -->
+                <div class="step" data-step="6">
+                    <h2 class="step-title">⏰ Timeline & Budget</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="completionDate">When do you need this completed? <span class="required">*</span></label>
+                            <input type="date" id="completionDate" name="completionDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="urgency">Priority Level</label>
+                            <select id="urgency" name="urgency">
+                                <option value="standard">Standard (3-4 weeks)</option>
+                                <option value="urgent">Urgent (1-2 weeks)</option>
+                                <option value="flexible">Flexible (whenever ready)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="budgetRange">Budget Range</label>
+                        <select id="budgetRange" name="budgetRange">
+                            <option value="under-2000">Under $2,000</option>
+                            <option value="2000-5000">$2,000 - $5,000</option>
+                            <option value="5000-10000">$5,000 - $10,000</option>
+                            <option value="over-10000">Over $10,000</option>
+                            <option value="discuss">Prefer to discuss</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="futureFeatures">Future Features of Interest</label>
+                        <textarea id="futureFeatures" name="futureFeatures" placeholder="Online ordering, mobile app, e-commerce, etc."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 7: Contact & Additional Info -->
+                <div class="step" data-step="7">
+                    <h2 class="step-title">📞 Contact & Additional Information</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="contactName">Primary Contact Name <span class="required">*</span></label>
+                            <input type="text" id="contactName" name="contactName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactTitle">Title/Position</label>
+                            <input type="text" id="contactTitle" name="contactTitle" placeholder="Owner, Manager, etc.">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="preferredContact">Preferred Contact Method</label>
+                        <select id="preferredContact" name="preferredContact">
+                            <option value="email">Email</option>
+                            <option value="phone">Phone</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="any">Any method is fine</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="additionalInfo">Additional Information</label>
+                        <textarea id="additionalInfo" name="additionalInfo" placeholder="Anything else you'd like us to know about your project?"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="hearAboutUs">How did you hear about us?</label>
+                        <select id="hearAboutUs" name="hearAboutUs">
+                            <option value="referral">Referral from friend/colleague</option>
+                            <option value="google">Google search</option>
+                            <option value="social-media">Social media</option>
+                            <option value="advertisement">Advertisement</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Success Message -->
+                <div class="step" data-step="success">
+                    <div class="success-message">
+                        <div class="success-icon">✨</div>
+                        <h2>Thank You!</h2>
+                        <p>Your requirements have been submitted successfully to <strong>Gifted Hands Designs</strong>.</p>
+                        <p>We'll review your information and get back to you within 24 hours with a detailed proposal tailored to your needs.</p>
+                        <p><strong>Next Steps:</strong></p>
+                        <ul style="text-align: left; max-width: 400px; margin: 20px auto;">
+                            <li>✅ We'll review your requirements</li>
+                            <li>💝 Prepare a custom proposal just for you</li>
+                            <li>📞 Schedule a call to discuss details</li>
+                            <li>🚀 Begin creating your amazing website!</li>
+                        </ul>
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(255, 107, 157, 0.1); border-radius: 10px; font-size: 0.9em;">
+                            <strong>Contact us anytime:</strong><br>
+                            📧 Email: contact@giftedhands.designs<br>
+                            📱 WhatsApp: +263 776 844 533
+                        </div>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)">Previous</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">Next</button>
+                    <button type="submit" class="btn btn-primary" id="submitBtn" style="display: none;">Submit Requirements</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Handle business type change to show relevant services
+        document.getElementById('businessType').addEventListener('change', function() {
+            const businessType = this.value;
+            const allBusinessSpecific = document.querySelectorAll('.business-specific');
+            
+            // Hide all business-specific sections
+            allBusinessSpecific.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show relevant section based on business type
+            if (businessType === 'pharmacy' || businessType === 'clinic' || businessType === 'hospital') {
+                document.querySelector('.pharmacy-services').style.display = 'block';
+            } else if (businessType === 'lodge') {
+                document.querySelector('.lodge-services').style.display = 'block';
+            } else if (businessType) {
+                document.querySelector('.generic-services').style.display = 'block';
+            }
+        });
+
+        let currentStep = 1;
+        const totalSteps = 7;
+
+        // Initialize form
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateStepCounter();
+            updateButtons();
+        });
+
+        function changeStep(direction) {
+            const current = document.querySelector('.step.active');
+            
+            if (direction === 1) {
+                // Validate current step before proceeding
+                if (!validateCurrentStep()) {
+                    return;
+                }
+                
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                }
+            } else {
+                if (currentStep > 1) {
+                    currentStep--;
+                }
+            }
+            
+            // Hide all steps
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            
+            // Show current step
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+            
+            updateProgress();
+            updateStepCounter();
+            updateButtons();
+        }
+
+        function validateCurrentStep() {
+            const currentStepElement = document.querySelector('.step.active');
+            const requiredFields = currentStepElement.querySelectorAll('[required]');
+            
+            for (let field of requiredFields) {
+                if (!field.value.trim()) {
+                    field.focus();
+                    alert('Please fill in all required fields before continuing.');
+                    return false;
+                }
+            }
+            
+            // Special validation for checkboxes in step 2 and 3
+            if (currentStep === 2) {
+                // Check if business type requires service selection
+                const businessType = document.getElementById('businessType').value;
+                if (businessType === 'pharmacy' || businessType === 'clinic' || businessType === 'hospital' || businessType === 'lodge') {
+                    const serviceChecked = currentStepElement.querySelector('input[name="services[]"]:checked');
+                    if (!serviceChecked) {
+                        alert('Please select at least one service you offer.');
+                        return false;
+                    }
+                }
+            }
+            
+            if (currentStep === 3) {
+                const goalChecked = currentStepElement.querySelector('input[name="goals[]"]:checked');
+                if (!goalChecked) {
+                    alert('Please select at least one website goal.');
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function updateStepCounter() {
+            document.getElementById('currentStep').textContent = currentStep;
+            document.getElementById('totalSteps').textContent = totalSteps;
+        }
+
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.style.display = currentStep === 1 ? 'none' : 'block';
+            
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('requirementsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!validateCurrentStep()) {
+                return;
+            }
+            
+            // Collect all form data
+            const formData = new FormData(this);
+            const data = {};
+            
+            // Handle regular form fields
+            for (let [key, value] of formData.entries()) {
+                if (key.endsWith('[]')) {
+                    // Handle checkbox arrays
+                    const arrayKey = key.slice(0, -2);
+                    if (!data[arrayKey]) {
+                        data[arrayKey] = [];
+                    }
+                    data[arrayKey].push(value);
+                } else {
+                    data[key] = value;
+                }
+            }
+            
+            // In a real implementation, you would send this data to your server
+            console.log('Form submitted with data:', data);
+            
+            // For now, we'll simulate submission and show success
+            setTimeout(() => {
+                currentStep = 'success';
+                document.querySelectorAll('.step').forEach(step => {
+                    step.classList.remove('active');
+                });
+                document.querySelector('[data-step="success"]').classList.add('active');
+                document.querySelector('.buttons').style.display = 'none';
+                
+                // Save to localStorage for demonstration
+                localStorage.setItem('clientRequirements_' + Date.now(), JSON.stringify(data));
+                
+                // Send email (you would implement this with a backend service)
+                alert('Requirements submitted successfully! We will contact you within 24 hours.');
+            }, 1000);
+        });
+
+        // Auto-save progress to localStorage
+        document.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('change', function() {
+                const formData = new FormData(document.getElementById('requirementsForm'));
+                const data = Object.fromEntries(formData);
+                localStorage.setItem('requirementsFormDraft', JSON.stringify(data));
+            });
+        });
+
+        // Load saved progress on page load
+        window.addEventListener('load', function() {
+            const saved = localStorage.getItem('requirementsFormDraft');
+            if (saved) {
+                const data = JSON.parse(saved);
+                Object.keys(data).forEach(key => {
+                    const field = document.querySelector(`[name="${key}"]`);
+                    if (field) {
+                        if (field.type === 'checkbox') {
+                            field.checked = true;
+                        } else {
+                            field.value = data[key];
+                        }
+                    }
+                });
+            }
+        });
+    </script>
