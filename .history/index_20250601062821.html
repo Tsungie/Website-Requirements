@@ -758,16 +758,10 @@
             const currentStepElement = document.querySelector('.step.active');
             const requiredFields = currentStepElement.querySelectorAll('[required]');
             
-            console.log('Validating step:', currentStep);
-            console.log('Required fields found:', requiredFields.length);
-            
             for (let field of requiredFields) {
-                console.log('Checking field:', field.name, 'Value:', field.value);
-                if (!field.value || field.value.trim() === '') {
+                if (!field.value.trim()) {
                     field.focus();
-                    field.style.borderColor = '#ff6b9d';
-                    field.style.borderWidth = '3px';
-                    alert(`Please fill in the "${field.previousElementSibling.textContent.replace(' *', '')}" field before continuing.`);
+                    alert('Please fill in all required fields before continuing.');
                     return false;
                 }
             }
@@ -776,26 +770,10 @@
             if (currentStep === 2) {
                 // Check if business type requires service selection
                 const businessType = document.getElementById('businessType').value;
-                console.log('Business type:', businessType);
-                
-                if (businessType === 'pharmacy' || businessType === 'clinic' || businessType === 'hospital') {
-                    const serviceChecked = currentStepElement.querySelector('.pharmacy-services input[name="services[]"]:checked');
+                if (businessType === 'pharmacy' || businessType === 'clinic' || businessType === 'hospital' || businessType === 'lodge') {
+                    const serviceChecked = currentStepElement.querySelector('input[name="services[]"]:checked');
                     if (!serviceChecked) {
-                        alert('Please select at least one pharmacy service you offer.');
-                        return false;
-                    }
-                } else if (businessType === 'lodge') {
-                    const serviceChecked = currentStepElement.querySelector('.lodge-services input[name="services[]"]:checked');
-                    if (!serviceChecked) {
-                        alert('Please select at least one lodge service you offer.');
-                        return false;
-                    }
-                } else if (businessType && businessType !== '') {
-                    // For generic services, check if the textarea is filled
-                    const servicesField = currentStepElement.querySelector('#primaryServices');
-                    if (servicesField && (!servicesField.value || servicesField.value.trim() === '')) {
-                        servicesField.focus();
-                        alert('Please describe your primary services or products.');
+                        alert('Please select at least one service you offer.');
                         return false;
                     }
                 }
@@ -808,12 +786,6 @@
                     return false;
                 }
             }
-            
-            // Reset border styles for valid fields
-            requiredFields.forEach(field => {
-                field.style.borderColor = '#e0e0e0';
-                field.style.borderWidth = '2px';
-            });
             
             return true;
         }
