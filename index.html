@@ -721,68 +721,6 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="budgetRange">Budget Range & Services Included</label>
-                        <div style="margin-bottom: 15px;">
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #ff6b9d;">
-                                <input type="radio" id="budget-basic" name="budgetRange" value="350-750" style="margin-right: 10px;">
-                                <label for="budget-basic" style="font-weight: bold; color: #c44569;">$350 - $750 - Basic Package</label>
-                                <ul style="margin: 8px 0 0 25px; font-size: 13px; color: #666;">
-                                    <li>✅ 3-5 page website (Home, About, Services, Contact)</li>
-                                    <li>✅ Mobile-responsive design</li>
-                                    <li>✅ Basic contact form</li>
-                                    <li>✅ Google Maps integration</li>
-                                    <li>✅ Basic SEO setup</li>
-                                    <li>✅ 1 month free hosting</li>
-                                    <li>❌ Custom design (template-based)</li>
-                                    <li>❌ Online booking/ordering systems</li>
-                                </ul>
-                            </div>
-                            
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #4ecdc4;">
-                                <input type="radio" id="budget-standard" name="budgetRange" value="750-1500" style="margin-right: 10px;">
-                                <label for="budget-standard" style="font-weight: bold; color: #c44569;">$750 - $1,500 - Standard Package</label>
-                                <ul style="margin: 8px 0 0 25px; font-size: 13px; color: #666;">
-                                    <li>✅ 5-8 page website</li>
-                                    <li>✅ Custom design & branding</li>
-                                    <li>✅ Advanced contact forms</li>
-                                    <li>✅ Photo gallery/portfolio</li>
-                                    <li>✅ Basic online booking system</li>
-                                    <li>✅ Social media integration</li>
-                                    <li>✅ Enhanced SEO optimization</li>
-                                    <li>✅ 3 months free hosting</li>
-                                    <li>✅ Basic content management</li>
-                                </ul>
-                            </div>
-                            
-                            <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #ffd700;">
-                                <input type="radio" id="budget-premium" name="budgetRange" value="1500-3000" style="margin-right: 10px;">
-                                <label for="budget-premium" style="font-weight: bold; color: #c44569;">$1,500 - $3,000 - Premium Package</label>
-                                <ul style="margin: 8px 0 0 25px; font-size: 13px; color: #666;">
-                                    <li>✅ 8-15 page website</li>
-                                    <li>✅ Fully custom design & logo</li>
-                                    <li>✅ Advanced booking/ordering system</li>
-                                    <li>✅ Payment gateway integration</li>
-                                    <li>✅ Customer portal/dashboard</li>
-                                    <li>✅ Blog/news section</li>
-                                    <li>✅ Advanced SEO & analytics</li>
-                                    <li>✅ 6 months free hosting</li>
-                                    <li>✅ Full content management system</li>
-                                    <li>✅ Live chat integration</li>
-                                    <li>✅ Email marketing setup</li>
-                                </ul>
-                            </div>
-                            
-                            <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; border-left: 4px solid #666;">
-                                <input type="radio" id="budget-custom" name="budgetRange" value="discuss" style="margin-right: 10px;">
-                                <label for="budget-custom" style="font-weight: bold; color: #666;">Custom Solution - Let's Discuss</label>
-                                <p style="margin: 8px 0 0 25px; font-size: 13px; color: #666;">
-                                    Need e-commerce, multiple locations, custom integrations, or enterprise features? Let's create a tailored solution for your specific needs.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
                         <label for="futureFeatures">Future Features of Interest</label>
                         <textarea id="futureFeatures" name="futureFeatures" placeholder="Online ordering, mobile app, e-commerce, etc."></textarea>
                     </div>
@@ -1023,15 +961,6 @@
                 const goalChecked = currentStepElement.querySelector('input[name="goals[]"]:checked');
                 if (!goalChecked) {
                     alert('Please select at least one website goal.');
-                    return false;
-                }
-            }
-            
-            if (currentStep === 6) {
-                // Validate budget selection
-                const budgetSelected = currentStepElement.querySelector('input[name="budgetRange"]:checked');
-                if (!budgetSelected) {
-                    alert('Please select a budget range that works for you.');
                     return false;
                 }
             }
