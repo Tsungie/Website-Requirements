@@ -1,68 +1,9 @@
-// Handle form submission
-        document.getElementById('requirementsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            if (!validateCurrentStep()) {
-                return;
-            }
-            
-            // Collect all form data
-            const formData = new FormData(this);
-            const data = {};
-            
-            // Handle regular form fields
-            for (let [key, value] of formData.entries()) {
-                if (key.endsWith('[]')) {
-                    // Handle checkbox arrays
-                    const arrayKey = key.slice(0, -2);
-                    if (!data[arrayKey]) {
-                        data[arrayKey] = [];
-                    }
-                    data[arrayKey].push(value);
-                } else {
-                    data[key] = value;
-                }
-            }
-            
-            // Convert arrays to comma-separated strings for email
-            Object.keys(data).forEach(key => {
-                if (Array.isArray(data[key])) {
-                    data[key] = data[key].join(', ');
-                }
-            });
-            
-            // Add submission timestamp
-            data.submission_date = new Date().toLocaleString();
-            
-            // Show loading state
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-            
-            // Send email using EmailJS
-            emailjs.send(
-                'YOUR_SERVICE_ID',    // Replace with your service ID
-                'YOUR_TEMPLATE_ID',   // Replace with your template ID
-                data
-            ).then(function(response) {
-                console.log('Email sent successfully!', response);
-                
-                // Show success step
-                currentStep = 'success';
-                document.querySelectorAll('.step').forEach(step => {
-                    step.classList.remove('active');
-                });
-                document.querySelector('[data-step="success"]').classList.add('active');
-                document.querySelector('.buttons').style.display = 'none';
-                
-                // Save to localStorage for backup
-                localStorage.setItem('clientRequirements_' + Date.now(), JSON.<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Requirements - Tsungie Tech Solutions</title>
+    <title>Website Requirements - Tsungie Gifetd Hands Designs</title>
     <style>
         * {
             margin: 0;
@@ -311,10 +252,10 @@
                 <span id="currentStep">1</span> of <span id="totalSteps">7</span>
             </div>
 
-            <form id="requirementsForm" name="website-requirements" method="POST" netlify>
-                <!-- Netlify form detection -->
-                <input type="hidden" name="form-name" value="website-requirements">
-                    <!-- Step 1: Business Information -->
+            <form name="website-requirements" method="POST" data-netlify="true" id="requirementsForm">
+                <input type="hidden" name="form-name" value="website-requirements" />
+                
+                <!-- Step 1: Business Information -->
                 <div class="step active" data-step="1">
                     <h2 class="step-title">📊 Business Information</h2>
                     
@@ -369,27 +310,27 @@
                                 <label for="ageGroups">Primary Age Groups <span class="required">*</span></label>
                                 <div class="checkbox-group">
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="age-children" name="ageGroups[]" value="children">
+                                        <input type="checkbox" id="age-children" name="ageGroups" value="children">
                                         <label for="age-children">Children (0-12)</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="age-teens" name="ageGroups[]" value="teens">
+                                        <input type="checkbox" id="age-teens" name="ageGroups" value="teens">
                                         <label for="age-teens">Teenagers (13-19)</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="age-young-adults" name="ageGroups[]" value="young-adults">
+                                        <input type="checkbox" id="age-young-adults" name="ageGroups" value="young-adults">
                                         <label for="age-young-adults">Young Adults (20-35)</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="age-adults" name="ageGroups[]" value="adults">
+                                        <input type="checkbox" id="age-adults" name="ageGroups" value="adults">
                                         <label for="age-adults">Adults (36-55)</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="age-seniors" name="ageGroups[]" value="seniors">
+                                        <input type="checkbox" id="age-seniors" name="ageGroups" value="seniors">
                                         <label for="age-seniors">Seniors (55+)</label>
                                     </div>
                                     <div class="checkbox-item">
-                                        <input type="checkbox" id="age-all" name="ageGroups[]" value="all-ages">
+                                        <input type="checkbox" id="age-all" name="ageGroups" value="all-ages">
                                         <label for="age-all">All Ages</label>
                                     </div>
                                 </div>
@@ -437,7 +378,7 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Services & Offerings (Dynamic based on business type) -->
+                <!-- Step 2: Services & Offerings -->
                 <div class="step" data-step="2">
                     <h2 class="step-title">💼 Services & Offerings</h2>
                     
@@ -447,27 +388,27 @@
                             <label>Pharmacy Services You Offer <span class="required">*</span></label>
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="prescriptions" name="services[]" value="prescriptions">
+                                    <input type="checkbox" id="prescriptions" name="services" value="prescriptions">
                                     <label for="prescriptions">Prescription Filling</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="otc" name="services[]" value="otc">
+                                    <input type="checkbox" id="otc" name="services" value="otc">
                                     <label for="otc">Over-the-Counter Medications</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="vaccinations" name="services[]" value="vaccinations">
+                                    <input type="checkbox" id="vaccinations" name="services" value="vaccinations">
                                     <label for="vaccinations">Vaccinations</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="consultations" name="services[]" value="consultations">
+                                    <input type="checkbox" id="consultations" name="services" value="consultations">
                                     <label for="consultations">Health Consultations</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="delivery" name="services[]" value="delivery">
+                                    <input type="checkbox" id="delivery" name="services" value="delivery">
                                     <label for="delivery">Home Delivery</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="compounding" name="services[]" value="compounding">
+                                    <input type="checkbox" id="compounding" name="services" value="compounding">
                                     <label for="compounding">Compounding Services</label>
                                 </div>
                             </div>
@@ -485,35 +426,35 @@
                             <label>Lodge Services & Amenities <span class="required">*</span></label>
                             <div class="checkbox-group">
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="accommodation" name="services[]" value="accommodation">
+                                    <input type="checkbox" id="accommodation" name="services" value="accommodation">
                                     <label for="accommodation">Accommodation</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="restaurant-service" name="services[]" value="restaurant">
+                                    <input type="checkbox" id="restaurant-service" name="services" value="restaurant">
                                     <label for="restaurant-service">Restaurant/Dining</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="conference" name="services[]" value="conference">
+                                    <input type="checkbox" id="conference" name="services" value="conference">
                                     <label for="conference">Conference Facilities</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="wifi" name="services[]" value="wifi">
+                                    <input type="checkbox" id="wifi" name="services" value="wifi">
                                     <label for="wifi">Free WiFi</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="swimming" name="services[]" value="swimming">
+                                    <input type="checkbox" id="swimming" name="services" value="swimming">
                                     <label for="swimming">Swimming Pool</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="spa" name="services[]" value="spa">
+                                    <input type="checkbox" id="spa" name="services" value="spa">
                                     <label for="spa">Spa Services</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="tours" name="services[]" value="tours">
+                                    <input type="checkbox" id="tours" name="services" value="tours">
                                     <label for="tours">Tour Arrangements</label>
                                 </div>
                                 <div class="checkbox-item">
-                                    <input type="checkbox" id="transport" name="services[]" value="transport">
+                                    <input type="checkbox" id="transport" name="services" value="transport">
                                     <label for="transport">Airport Transport</label>
                                 </div>
                             </div>
@@ -540,12 +481,12 @@
                     <div class="business-specific generic-services" style="display: none;">
                         <div class="form-group">
                             <label for="primaryServices">Primary Services/Products <span class="required">*</span></label>
-                            <textarea id="primaryServices" name="services" placeholder="Describe your main services or products"></textarea>
+                            <textarea id="primaryServices" name="primaryServices" placeholder="Describe your main services or products"></textarea>
                         </div>
                         
                         <div class="form-group">
                             <label for="businessSpecializations">Specializations</label>
-                            <textarea id="businessSpecializations" name="specializations" placeholder="Any areas of expertise or specialization"></textarea>
+                            <textarea id="businessSpecializations" name="businessSpecializations" placeholder="Any areas of expertise or specialization"></textarea>
                         </div>
                     </div>
                     
@@ -576,43 +517,43 @@
                         <label>Payment Methods Accepted <span class="required">*</span></label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-cash" name="paymentMethods[]" value="cash">
+                                <input type="checkbox" id="payment-cash" name="paymentMethods" value="cash">
                                 <label for="payment-cash">Cash</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-visa" name="paymentMethods[]" value="visa-mastercard">
+                                <input type="checkbox" id="payment-visa" name="paymentMethods" value="visa-mastercard">
                                 <label for="payment-visa">Visa/Mastercard</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-ecocash" name="paymentMethods[]" value="ecocash">
+                                <input type="checkbox" id="payment-ecocash" name="paymentMethods" value="ecocash">
                                 <label for="payment-ecocash">EcoCash</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-onemoney" name="paymentMethods[]" value="onemoney">
+                                <input type="checkbox" id="payment-onemoney" name="paymentMethods" value="onemoney">
                                 <label for="payment-onemoney">OneMoney</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-telecash" name="paymentMethods[]" value="telecash">
+                                <input type="checkbox" id="payment-telecash" name="paymentMethods" value="telecash">
                                 <label for="payment-telecash">TeleCash</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-swipe" name="paymentMethods[]" value="swipe">
+                                <input type="checkbox" id="payment-swipe" name="paymentMethods" value="swipe">
                                 <label for="payment-swipe">Swipe (Debit Cards)</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-zipit" name="paymentMethods[]" value="zipit">
+                                <input type="checkbox" id="payment-zipit" name="paymentMethods" value="zipit">
                                 <label for="payment-zipit">ZipIt</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-bank-transfer" name="paymentMethods[]" value="bank-transfer">
+                                <input type="checkbox" id="payment-bank-transfer" name="paymentMethods" value="bank-transfer">
                                 <label for="payment-bank-transfer">Bank Transfer</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-USD" name="paymentMethods[]" value="usd">
+                                <input type="checkbox" id="payment-USD" name="paymentMethods" value="usd">
                                 <label for="payment-USD">US Dollars</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="payment-credit" name="paymentMethods[]" value="credit-terms">
+                                <input type="checkbox" id="payment-credit" name="paymentMethods" value="credit-terms">
                                 <label for="payment-credit">Credit Terms</label>
                             </div>
                         </div>
@@ -627,23 +568,23 @@
                         <label>Primary Website Goals <span class="required">*</span></label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="attractCustomers" name="goals[]" value="attract-customers">
+                                <input type="checkbox" id="attractCustomers" name="goals" value="attract-customers">
                                 <label for="attractCustomers">Attract New Customers</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="provideInfo" name="goals[]" value="provide-info">
+                                <input type="checkbox" id="provideInfo" name="goals" value="provide-info">
                                 <label for="provideInfo">Provide Service Information</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="onlineRequests" name="goals[]" value="online-requests">
+                                <input type="checkbox" id="onlineRequests" name="goals" value="online-requests">
                                 <label for="onlineRequests">Enable Online Requests</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="buildTrust" name="goals[]" value="build-trust">
+                                <input type="checkbox" id="buildTrust" name="goals" value="build-trust">
                                 <label for="buildTrust">Build Trust & Credibility</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="communication" name="goals[]" value="communication">
+                                <input type="checkbox" id="communication" name="goals" value="communication">
                                 <label for="communication">Improve Customer Communication</label>
                             </div>
                         </div>
@@ -653,27 +594,27 @@
                         <label>Desired Website Features</label>
                         <div class="checkbox-group">
                             <div class="checkbox-item">
-                                <input type="checkbox" id="prescriptionRefill" name="features[]" value="prescription-refill">
+                                <input type="checkbox" id="prescriptionRefill" name="features" value="prescription-refill">
                                 <label for="prescriptionRefill">Online Prescription Refill Requests</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="medicineChecker" name="features[]" value="medicine-checker">
+                                <input type="checkbox" id="medicineChecker" name="features" value="medicine-checker">
                                 <label for="medicineChecker">Medicine Availability Checker</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="appointmentBooking" name="features[]" value="appointment-booking">
+                                <input type="checkbox" id="appointmentBooking" name="features" value="appointment-booking">
                                 <label for="appointmentBooking">Appointment Booking</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="healthBlog" name="features[]" value="health-blog">
+                                <input type="checkbox" id="healthBlog" name="features" value="health-blog">
                                 <label for="healthBlog">Health Tips Blog</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="testimonials" name="features[]" value="testimonials">
+                                <input type="checkbox" id="testimonials" name="features" value="testimonials">
                                 <label for="testimonials">Customer Testimonials</label>
                             </div>
                             <div class="checkbox-item">
-                                <input type="checkbox" id="liveChat" name="features[]" value="live-chat">
+                                <input type="checkbox" id="liveChat" name="features" value="live-chat">
                                 <label for="liveChat">Live Chat Support</label>
                             </div>
                         </div>
@@ -872,7 +813,6 @@
     </div>
 
     <script>
-        
         // Handle business type change to show relevant services
         document.getElementById('businessType').addEventListener('change', function() {
             const businessType = this.value;
@@ -884,7 +824,10 @@
             });
             
             // Remove required attribute from all service fields first
-            document.getElementById('primaryServices').removeAttribute('required');
+            const primaryServicesField = document.getElementById('primaryServices');
+            if (primaryServicesField) {
+                primaryServicesField.removeAttribute('required');
+            }
             
             // Show relevant section based on business type
             if (businessType === 'pharmacy' || businessType === 'clinic' || businessType === 'hospital') {
@@ -894,7 +837,9 @@
             } else if (businessType) {
                 document.querySelector('.generic-services').style.display = 'block';
                 // Only make it required when this section is visible
-                document.getElementById('primaryServices').setAttribute('required', 'required');
+                if (primaryServicesField) {
+                    primaryServicesField.setAttribute('required', 'required');
+                }
             }
         });
 
@@ -943,9 +888,6 @@
             const currentStepElement = document.querySelector('.step.active');
             const requiredFields = currentStepElement.querySelectorAll('[required]');
             
-            console.log('Validating step:', currentStep);
-            console.log('Required fields found:', requiredFields.length);
-            
             // First validate all standard required fields (input, textarea, select)
             for (let field of requiredFields) {
                 // Skip validation for fields that are in hidden sections
@@ -954,7 +896,6 @@
                     continue; // Skip hidden fields
                 }
                 
-                console.log('Checking field:', field.name, 'Value:', field.value);
                 if (!field.value || field.value.trim() === '') {
                     field.focus();
                     field.style.borderColor = '#ff6b9d';
@@ -970,7 +911,7 @@
             // Special validation for checkboxes in step 1, 2 and 3
             if (currentStep === 1) {
                 // Validate age groups selection
-                const ageGroupChecked = currentStepElement.querySelector('input[name="ageGroups[]"]:checked');
+                const ageGroupChecked = currentStepElement.querySelector('input[name="ageGroups"]:checked');
                 if (!ageGroupChecked) {
                     alert('Please select at least one age group for your target customers.');
                     return false;
@@ -980,16 +921,15 @@
             if (currentStep === 2) {
                 // Check if business type requires service selection
                 const businessType = document.getElementById('businessType').value;
-                console.log('Business type:', businessType);
                 
                 if (businessType === 'pharmacy' || businessType === 'clinic' || businessType === 'hospital') {
-                    const serviceChecked = currentStepElement.querySelector('.pharmacy-services input[name="services[]"]:checked');
+                    const serviceChecked = currentStepElement.querySelector('.pharmacy-services input[name="services"]:checked');
                     if (!serviceChecked) {
                         alert('Please select at least one pharmacy service you offer.');
                         return false;
                     }
                 } else if (businessType === 'lodge') {
-                    const serviceChecked = currentStepElement.querySelector('.lodge-services input[name="services[]"]:checked');
+                    const serviceChecked = currentStepElement.querySelector('.lodge-services input[name="services"]:checked');
                     if (!serviceChecked) {
                         alert('Please select at least one lodge service you offer.');
                         return false;
@@ -1012,7 +952,7 @@
                 }
                 
                 // Validate payment methods selection
-                const paymentMethodChecked = currentStepElement.querySelector('input[name="paymentMethods[]"]:checked');
+                const paymentMethodChecked = currentStepElement.querySelector('input[name="paymentMethods"]:checked');
                 if (!paymentMethodChecked) {
                     alert('Please select at least one payment method you accept.');
                     return false;
@@ -1020,7 +960,7 @@
             }
             
             if (currentStep === 3) {
-                const goalChecked = currentStepElement.querySelector('input[name="goals[]"]:checked');
+                const goalChecked = currentStepElement.querySelector('input[name="goals"]:checked');
                 if (!goalChecked) {
                     alert('Please select at least one website goal.');
                     return false;
@@ -1062,50 +1002,20 @@
             }
         }
 
-        // Handle form submission
+        // Handle form submission with Netlify
         document.getElementById('requirementsForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
             if (!validateCurrentStep()) {
+                e.preventDefault();
                 return;
             }
             
-            // Collect all form data
-            const formData = new FormData(this);
-            const data = {};
+            // Show loading state
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.textContent = 'Sending to misstsungie@gmail.com...';
+            submitBtn.disabled = true;
             
-            // Handle regular form fields
-            for (let [key, value] of formData.entries()) {
-                if (key.endsWith('[]')) {
-                    // Handle checkbox arrays
-                    const arrayKey = key.slice(0, -2);
-                    if (!data[arrayKey]) {
-                        data[arrayKey] = [];
-                    }
-                    data[arrayKey].push(value);
-                } else {
-                    data[key] = value;
-                }
-            }
-            
-            // In a real implementation, you would send this data to your server
-            console.log('Form submitted with data:', data);
-            
-            // For now, we'll simulate submission and show success
-            setTimeout(() => {
-                currentStep = 'success';
-                document.querySelectorAll('.step').forEach(step => {
-                    step.classList.remove('active');
-                });
-                document.querySelector('[data-step="success"]').classList.add('active');
-                document.querySelector('.buttons').style.display = 'none';
-                
-                // Save to localStorage for demonstration
-                localStorage.setItem('clientRequirements_' + Date.now(), JSON.stringify(data));
-                
-                // Send email (you would implement this with a backend service)
-                alert('Requirements submitted successfully! We will contact you within 24 hours.');
-            }, 1000);
+            // Let Netlify handle the form submission
+            // The form will submit and you'll get email notifications
         });
 
         // Auto-save progress to localStorage
